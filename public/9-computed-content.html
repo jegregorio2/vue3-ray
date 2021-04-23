@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Conditional Data</title>
+  <title>Computed Content</title>
   <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css'>
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'>
   <script src='https://unpkg.com/vue@next'></script><script  src="./script.js"></script>
@@ -10,15 +10,21 @@
 <body class="container mt-5">
 
 <!-- To Do Lists -->
-<!-- 1. v-if to show products cheaper than $99 -->
-<!-- 2. Use a <template> tag -->
-<!-- 3. Try v-if vs v-show -->
-<!-- 4. Use v-else and v-else-if to show badges depending on price -->
+<!-- 1. Create a currency filter -->
+<!-- 2. Display count based on max -->
+<!-- 3. Use filtered array on v-for -->
+<!-- 4. Remove v-if statement -->
+<!-- 5. Show label with qty based on price selection -->
 
 <!-- App Template Code Here -->
 <section class="container" id="app">
-  <div v-for="item in products" :key="item.id" id="item-list" class="row d-flex mb-3 align-items-center">
-    <template v-if="item.price <= Number(max)"
+  
+  <label for="max-price" class="form-label h2">Max Price ($ {{max}})</label>
+  <div class="badge bg-success ml-3">results: {{filteredProducts.length}}</div>
+  <input v-model.number="max" type="range" class="form-range" min="0" max="130" >
+
+  <div v-for="(item, index) in filteredProducts" :key="item.id" id="item-list" class="row align-items-center">
+    <template v-if="item.price<=Number(max)">
       <div class="col-sm-4">
         <img class="img-fluid d-block" :src="item.image" :alt="item.name">
       </div>
@@ -26,10 +32,7 @@
         <h3 class="text-primary">{{item.name }}</h3>
         <p class="mb-0">{{ item.description }}</p>
         <div class="h5 float-right">
-          <span class="badge bg-success" v-if="item.price >= 90">premier</span>
-          <span class="badge bg-primary" v-else-if="item.price < 90 && item.price > 10">value</span>
-          <span class="badge bg-danger" v-else>sale</span>
-          $ {{item.price}}</div>
+        $ {{ currency(item.price) }}</div>
       </div>
     </template>
   </div>
@@ -41,7 +44,8 @@
 const App = {
   data() {
     return {
-      max: 100,
+      displayLabels: true,
+      max: 50,
       products : [
         {
           "id": "532",
@@ -284,6 +288,16 @@ const App = {
           "image": "https://hplussport.com/wp-content/uploads/2015/12/mineral-water-raspberry_600px.png"
         }
       ]
+    }
+  },
+  computed: {
+    filteredProducts() {
+      return this.products.filter( item => (item.price < this.max ))
+    }
+  },
+  methods: {
+    currency(value) {
+      return (Number.parseFloat(value).toFixed(2));
     }
   }
 }

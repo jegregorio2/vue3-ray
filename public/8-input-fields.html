@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Conditional Data</title>
+  <title>Input Fields</title>
   <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css'>
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'>
   <script src='https://unpkg.com/vue@next'></script><script  src="./script.js"></script>
@@ -10,15 +10,25 @@
 <body class="container mt-5">
 
 <!-- To Do Lists -->
-<!-- 1. v-if to show products cheaper than $99 -->
-<!-- 2. Use a <template> tag -->
-<!-- 3. Try v-if vs v-show -->
-<!-- 4. Use v-else and v-else-if to show badges depending on price -->
+<!-- 1. Use v-model to control max price -->
+<!-- 2. Add a .number filter -->
+<!-- 3. Create a displayLabels boolean -->
+<!-- 4. Use a checkbox to toggle value -->
+<!-- 5. Modify code to show/hide labels -->
 
 <!-- App Template Code Here -->
 <section class="container" id="app">
-  <div v-for="item in products" :key="item.id" id="item-list" class="row d-flex mb-3 align-items-center">
-    <template v-if="item.price <= Number(max)"
+  <label for="max-price" class="form-label h2">Max Price</label>
+  <input v-model.number="max" class="form-control" id="max-price" >
+  <input v-model="max" type="range" class="form-range" min="0" max="130" >
+  <div class="form-check">
+    <input v-model="displayLabels" class="form-check-input" type="checkbox" id="showLabels">
+    <label class="form-check-label" for="showLabels">
+        <span class="badge bg-dark" v-else>show labels</span>
+    </label>
+  </div>
+  <div v-for="item in products" :key="item.id" id="item-list" class="row align-items-center">
+    <template v-if="item.price<=Number(max)">
       <div class="col-sm-4">
         <img class="img-fluid d-block" :src="item.image" :alt="item.name">
       </div>
@@ -26,10 +36,11 @@
         <h3 class="text-primary">{{item.name }}</h3>
         <p class="mb-0">{{ item.description }}</p>
         <div class="h5 float-right">
-          <span class="badge bg-success" v-if="item.price >= 90">premier</span>
-          <span class="badge bg-primary" v-else-if="item.price < 90 && item.price > 10">value</span>
-          <span class="badge bg-danger" v-else>sale</span>
-          $ {{item.price}}</div>
+          <span class="badge bg-success" v-if="item.price >= 90 && displayLabels">premier</span>
+          <span class="badge bg-primary" v-else-if="item.price < 90 && item.price > 10 && displayLabels">value</span>
+          <span class="badge bg-danger" v-else-if="item.price <= 10 && displayLabels">sale</span>
+          $ {{item.price}}
+        </div>
       </div>
     </template>
   </div>
@@ -41,7 +52,8 @@
 const App = {
   data() {
     return {
-      max: 100,
+      displayLabels: true,
+      max: 50,
       products : [
         {
           "id": "532",
