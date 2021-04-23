@@ -1,0 +1,49 @@
+<!-- 4. BASIC SETUP -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Binding with Directives</title>
+  <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css'>
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'>
+  <script src='https://unpkg.com/vue@next'></script><script  src="./script.js"></script>
+</head>
+<body class="container mt-5">
+
+<!-- To Do Lists -->
+<!-- 1. Add an img tag -->
+<!-- 2. Use v-bind with imgSrc variable -->
+<!-- 3. Try the shortcut :src version -->
+<!-- 4. Add :alt with the name variable -->
+<!-- Bonus: Add img-fluid bootstrap class -->
+
+<!-- App Template Code Here -->
+<section id="app">
+  <h2>{{ name }}</h2>
+  <!-- add an img tag, use v-bind, :src, :alt, img-fluid -->
+  <img class="img-fluid" :src="imgSrc" :alt="name">
+  <p>{{description}}</p>
+  <div class="h3">$ {{price}}</div>
+</section>
+<!-- App Template Code Here -->
+
+<!-- App Script Code Here -->
+<script>
+const App = {
+  data() {
+    return {
+      "name": "Bamboo Thermal Ski Coat",
+      "description": "You'll be the most environmentally conscious skier on the slopes - and the most stylish - wearing our fitted bamboo thermal ski coat, made from organic bamboo with recycled plastic down filling.",
+      "imgSrc": "https://hplussport.com/wp-content/uploads/2016/12/ski-coat_LYNDA_29940.jpg",
+      "price": 99
+    }
+  }
+}
+
+Vue.createApp(App).mount('#app')
+</script>
+<!-- App Script Code Here -->
+
+
+</body>
+</html>
